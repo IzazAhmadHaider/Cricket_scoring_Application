@@ -1,7 +1,9 @@
-import { useState ,useEffect } from 'react'
-import './App.css'
-import SquadInfo from './components/scorewritingpages/SquadInfo'
-import Score from './components/scorewritingpages/TeamInfo'
+import { useState, useEffect } from "react";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SquadInfo from "./components/scorewritingpages/SquadInfo";
+import Score from "./components/scorewritingpages/TeamInfo";
+import MatchPage from "./components/scorewritingpages/MatchPage";
 
 function App() {
   const [teamsNames, setTeamNames] = useState({
@@ -9,34 +11,48 @@ function App() {
     team2: "",
     totalplayersperteam: "",
   });
-  const getTotalPlayers=(teaminfo) =>{
+  const getTotalPlayers = (teaminfo) => {
     setTeamNames(teaminfo);
-  }
+  };
 
+  // useEffect(() => {
+  //   const handleBeforeUnload = (e) => {
+  //     const confirmationMessage = "Are you sure you want to leave? Your data will be lost.";
+  //     e.preventDefault();
+  //     e.returnValue = confirmationMessage;
+  //     return confirmationMessage;
+  //   };
 
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      const confirmationMessage = "Are you sure you want to leave? Your data will be lost.";
-      e.preventDefault();
-      e.returnValue = confirmationMessage;
-      return confirmationMessage;
-    };
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, []);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Score getTotalPlayers={getTotalPlayers} />,
+    },
+    {
+      path: "/squad",
+      element: <SquadInfo teamplayersinfo={teamsNames} />,
+    },
+    {
+      path: "/matchpage",
+      element: <MatchPage />,
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+    }
+  ]);
   return (
     <>
-    <div className='flex space-x-10'>
+      <RouterProvider router={router} />
+      {/* <div className='flex space-x-10'>
     <Score getTotalPlayers={getTotalPlayers}/>
     <SquadInfo teamplayersinfo={teamsNames}/>
-    </div>
-    
+    </div> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
