@@ -26,7 +26,6 @@ function SquadInfo({ teamplayersinfo = 1 }) {
       [name]: value,
     }));
 
-    console.log(squadteam1);
   };
   const navigate = useNavigate();
 
@@ -37,7 +36,6 @@ function SquadInfo({ teamplayersinfo = 1 }) {
       [name]: value,
     }));
 
-    console.log(squadteam2);
   };
   useEffect(() => {
     if (teamplayersinfo.totalplayersperteam <= 0) {

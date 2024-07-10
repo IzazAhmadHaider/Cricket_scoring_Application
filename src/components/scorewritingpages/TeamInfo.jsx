@@ -20,7 +20,6 @@ const Score = ({ getTotalPlayers }) => {
     // Validate if totalplayersperteam is an integer
     const totalPlayers = parseInt(teamsNames.totalplayersperteam);
     if (isNaN(totalPlayers) || totalPlayers !== parseFloat(teamsNames.totalplayersperteam)) {
-      console.log("Total Players per team must be an integer.");
       setTeamNames((prevState) => ({
         ...prevState,
         totalplayersperteam: "Please Enter a Number",
@@ -29,7 +28,6 @@ const Score = ({ getTotalPlayers }) => {
     }
 
     getTotalPlayers(teamsNames);
-    console.log(teamsNames);
     navigate("/squad")
   };
 
