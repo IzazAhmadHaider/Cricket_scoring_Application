@@ -14,6 +14,9 @@ const MatchPage = () => {
     setIstbatting,
     teamsNames,
   } = useSquadContext();
+
+
+  console.log(istbatting);
   const [scorecardteam1, setScorecardteam1] = useState({
     player1: {
       name: "",
@@ -328,7 +331,7 @@ const MatchPage = () => {
         <Select
           label="Please select Bowler"
           placeholder="Pick Your Bowler"
-          data={Object.entries(istbatting === "team1" ? squadteam1 : squadteam2 ).map(([key, value]) => ({
+          data={Object.entries(istbatting === "team1" ? squadteam2 : squadteam1 ).map(([key, value]) => ({
             value: key,
             label: value,
           }))}

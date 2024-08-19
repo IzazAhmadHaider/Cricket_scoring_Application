@@ -41,16 +41,13 @@ function App() {
     {
       path: "/matchpage",
       element: <MatchPage />,
-
-    }
+    },
   ]);
   return (
     <>
-      <RouterProvider router={router} />
-      {/* <div className='flex space-x-10'>
-    <Score getTotalPlayers={getTotalPlayers}/>
-    <SquadInfo teamplayersinfo={teamsNames}/>
-    </div> */}
+      <div className=" font-SairaSemiCondensed">
+        <RouterProvider router={router} />
+      </div>
     </>
   );
 }
