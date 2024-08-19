@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Select } from "@mantine/core";
+import { Modal, Button, Select,Text } from "@mantine/core";
 import { useSquadContext } from "../../AppContextProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -39,63 +39,78 @@ const MatchPage = () => {
       extras: 0,
     },
   });
-  
+
   const [opened, { open, close }] = useDisclosure(false);
   const [striker, setStriker] = useState("player 0");
-  
-  const selectData = Object.entries(squadteam1).map(([key, value]) => ({
+
+  const selectData = Object.entries(istbatting === "team1" ? squadteam1 : squadteam2 ).map(([key, value]) => ({
     value: key,
     label: value,
   }));
-  
+
   const handleButtonClick = (value) => {
     const intValue = parseInt(value);
     if (intValue >= 0) {
       const playerKey = striker === "Player 0" ? "player1" : "player2";
-  
+
       setScorecardteam1((prev) => {
         const updatedBalls = parseInt(prev[playerKey].balls) + 1;
-        const updatedRuns = parseInt(prev[playerKey].runs) + (intValue === 1 || intValue === 2 || intValue === 3 || intValue === 4 || intValue === 6 ? intValue : 0);
-        const updatedRunsBowler = parseInt(prev.Bowler.runs) + (intValue === 0 ||intValue === 1 || intValue === 2 || intValue === 3 || intValue === 4 || intValue === 6 ? intValue : 1);
-        const updatedoverBowler = parseInt(prev.Bowler.overs) + (1);
-  
+        const updatedRuns =
+          parseInt(prev[playerKey].runs) +
+          (intValue === 1 ||
+          intValue === 2 ||
+          intValue === 3 ||
+          intValue === 4 ||
+          intValue === 6
+            ? intValue
+            : 0);
+        const updatedRunsBowler =
+          parseInt(prev.Bowler.runs) +
+          (intValue === 0 ||
+          intValue === 1 ||
+          intValue === 2 ||
+          intValue === 3 ||
+          intValue === 4 ||
+          intValue === 6
+            ? intValue
+            : 1);
+        const updatedoverBowler = parseInt(prev.Bowler.overs) + 1;
+
         const updatedPlayer = {
           ...prev[playerKey],
           balls: updatedBalls,
           runs: updatedRuns,
           strikerate: Math.round((updatedRuns / updatedBalls) * 100),
         };
-  
+
         const updatedBowler = {
           ...prev.Bowler,
           runs: updatedRunsBowler,
-          overs:updatedoverBowler
+          overs: updatedoverBowler,
         };
-  
+
         if (intValue === 4) {
           updatedPlayer.fours = parseInt(prev[playerKey].fours) + 1;
         }
-  
+
         if (intValue === 6) {
           updatedPlayer.sixs = parseInt(prev[playerKey].sixs) + 1;
         }
-  
+
         return {
           ...prev,
           [playerKey]: updatedPlayer,
           Bowler: updatedBowler,
         };
       });
-  
+
       if (intValue === 1 || intValue === 3) {
         setStriker(striker === "Player 0" ? "Player 1" : "Player 0");
       }
     }
-  
+
     console.log(value);
   };
-  
-  
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -130,13 +145,11 @@ const MatchPage = () => {
   return (
     <div>
       <div className="p-3 bg-gradient-to-r from-blue-100 via-purple-100 to-pink-100 rounded-lg shadow-md space-y-2">
-        <div className="text-2xl font-bold text-blue-600 text-center">
+        <Text className="text-2xl font-bold text-blue-600 text-center">
           {`Match Between ${teamsNames.team1} VS ${teamsNames.team2}`}
-        </div>
+        </Text>
         <div className="text-lg text-purple-600 text-center">
-          <h1 className="text-2xl font-extrabold text-gray-800 mb-4 text-center">
-            Cricket Scoreboard
-          </h1>
+          <Text fw={700}>Cricket Scoreboard</Text>
         </div>
         <div className="p-4 bg-white rounded-lg shadow-lg space-y-4">
           <div className="grid grid-cols-3 gap-4">
@@ -315,7 +328,7 @@ const MatchPage = () => {
         <Select
           label="Please select Bowler"
           placeholder="Pick Your Bowler"
-          data={Object.entries(squadteam2).map(([key, value]) => ({
+          data={Object.entries(istbatting === "team1" ? squadteam1 : squadteam2 ).map(([key, value]) => ({
             value: key,
             label: value,
           }))}
