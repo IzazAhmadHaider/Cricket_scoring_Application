@@ -118,7 +118,7 @@ function SquadInfo({ teamplayersinfo = 1 }) {
                 </button>
                 <button
                   onClick={() => {
-                    setIstbatting(toss == "team1" ? "team1" : "team2"), matchstart();
+                    setIstbatting(toss == "team1" ? "team2" : "team1"), matchstart();
                   }}
                   className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                 >

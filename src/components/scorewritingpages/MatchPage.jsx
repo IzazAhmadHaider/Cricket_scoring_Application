@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Select,Text } from "@mantine/core";
+import { Modal, Button, Select, Text } from "@mantine/core";
 import { useSquadContext } from "../../AppContextProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +15,69 @@ const MatchPage = () => {
     teamsNames,
   } = useSquadContext();
 
+  const [total, setTotal] = useState({
+    score: 0,
+    overs: 0,
+    balls: 0,
+    average: 0.0,
+    outs: 2,
+  });
+  const totalcalculator = (intValue) => {
+    setTotal((prev) => {
+      const updatedRuns =
+        parseInt(prev.score) +
+        (intValue === 1 ||
+        intValue === 2 ||
+        intValue === 3 ||
+        intValue === 4 ||
+        intValue === 6 ||
+        intValue === 0
+          ? intValue
+          : 0);
 
-  console.log(istbatting);
+      const updatedBalls =
+        prev.balls == 6
+          ? prev.balls == 0
+          : intValue === 1 ||
+            intValue === 2 ||
+            intValue === 3 ||
+            intValue === 4 ||
+            intValue === 6 ||
+            intValue === 0
+          ? prev.balls + 1
+          : prev.balls;
+
+
+          const ballsaverage =  prev.balls/6;
+
+      const updatedOvers = prev.balls == 6 ? prev.overs + 1 : prev.overs;
+
+      const updatedAverage = prev.score / prev.overs + ballsaverage;
+
+      return {
+        ...prev,
+        score: updatedRuns,
+        balls: updatedBalls,
+        overs: updatedOvers,
+        average: updatedAverage,
+      };
+    });
+  };
+
+  const recordOut = () => {
+    setTotal((prev) => {
+      const updatedOuts = prev.outs + 1;
+      const updatedAverage =
+        updatedOuts > 0 ? (prev.score / updatedOuts).toFixed(2) : 0.0;
+
+      return {
+        ...prev,
+        outs: updatedOuts,
+        average: updatedAverage,
+      };
+    });
+  };
+
   const [scorecardteam1, setScorecardteam1] = useState({
     player1: {
       name: "",
@@ -46,12 +107,15 @@ const MatchPage = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [striker, setStriker] = useState("player 0");
 
-  const selectData = Object.entries(istbatting === "team1" ? squadteam1 : squadteam2 ).map(([key, value]) => ({
+  const selectData = Object.entries(
+    istbatting === "team1" ? squadteam1 : squadteam2
+  ).map(([key, value]) => ({
     value: key,
     label: value,
   }));
 
   const handleButtonClick = (value) => {
+    totalcalculator(value);
     const intValue = parseInt(value);
     if (intValue >= 0) {
       const playerKey = striker === "Player 0" ? "player1" : "player2";
@@ -99,6 +163,7 @@ const MatchPage = () => {
         if (intValue === 6) {
           updatedPlayer.sixs = parseInt(prev[playerKey].sixs) + 1;
         }
+        totalcalculator(intValue);
 
         return {
           ...prev,
@@ -111,8 +176,6 @@ const MatchPage = () => {
         setStriker(striker === "Player 0" ? "Player 1" : "Player 0");
       }
     }
-
-    console.log(value);
   };
 
   const navigate = useNavigate();
@@ -160,15 +223,17 @@ const MatchPage = () => {
             <div className="col-span-1 bg-gradient-to-r from-violet-200 to-pink-100 p-6 rounded-lg shadow-lg space-y-4">
               <div className="text-2xl font-bold text-gray-800 flex justify-between items-center">
                 <span>Total:</span>
-                <span className="text-blue-600">150/3</span>
+                <span className="text-blue-600">{total.score}</span>
               </div>
               <div className="text-2xl font-bold text-gray-800 flex justify-between items-center">
                 <span>Overs:</span>
-                <span className="text-blue-600">30.2</span>
+                <span className="text-blue-600">
+                  {total.overs + " /" + total.balls}
+                </span>
               </div>
               <div className="text-2xl font-bold text-gray-800 flex justify-between items-center">
                 <span>Average:</span>
-                <span className="text-blue-600">4.95</span>
+                <span className="text-blue-600">{total.average}</span>
               </div>
               <div className="text-2xl font-bold text-gray-800 flex justify-between items-center">
                 <span>
@@ -331,7 +396,9 @@ const MatchPage = () => {
         <Select
           label="Please select Bowler"
           placeholder="Pick Your Bowler"
-          data={Object.entries(istbatting === "team1" ? squadteam2 : squadteam1 ).map(([key, value]) => ({
+          data={Object.entries(
+            istbatting === "team1" ? squadteam2 : squadteam1
+          ).map(([key, value]) => ({
             value: key,
             label: value,
           }))}
