@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SquadInfo from "./components/scorewritingpages/SquadInfo";
 import Score from "./components/scorewritingpages/TeamInfo";
 import MatchPage from "./components/scorewritingpages/MatchPage";
+import LoginComponent from "./components/Login";
+import Signup from "./components/Signup";
 
 function App() {
   const [teamsNames, setTeamNames] = useState({
@@ -41,6 +43,14 @@ function App() {
     {
       path: "/matchpage",
       element: <MatchPage />,
+    },
+    {
+      path: "/login",
+      element: <LoginComponent />,
+    },
+    {
+      path: "/signup",
+      element: <Signup />,
     },
   ]);
   return (
