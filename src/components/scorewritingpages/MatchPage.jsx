@@ -3,6 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button, Select, Text } from "@mantine/core";
 import { useSquadContext } from "../../AppContextProvider";
 import { useNavigate } from "react-router-dom";
+import "../../styles/main.scss"
 
 const MatchPage = () => {
   const {
@@ -103,6 +104,10 @@ const MatchPage = () => {
       extras: 0,
     },
   });
+
+  useEffect(() => {
+    
+  }, []);
 
   const [opened, { open, close }] = useDisclosure(false);
   const [striker, setStriker] = useState("player 0");

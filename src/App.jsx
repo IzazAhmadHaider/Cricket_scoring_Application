@@ -6,6 +6,7 @@ import Score from "./components/scorewritingpages/TeamInfo";
 import MatchPage from "./components/scorewritingpages/MatchPage";
 import LoginComponent from "./components/Login";
 import Signup from "./components/Signup";
+import AIThreat from "./components/AI";
 
 function App() {
   const [teamsNames, setTeamNames] = useState({
@@ -51,7 +52,10 @@ function App() {
     {
       path: "/signup",
       element: <Signup />,
-    },
+    },{
+      path: "/ai",
+      element: <AIThreat/>
+    }
   ]);
   return (
     <>
