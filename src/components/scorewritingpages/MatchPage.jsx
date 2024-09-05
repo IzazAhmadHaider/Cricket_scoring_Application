@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button, Select, Text } from "@mantine/core";
 import { useSquadContext } from "../../AppContextProvider";
 import { useNavigate } from "react-router-dom";
-import "../../styles/main.scss"
+import "../../styles/main.scss";
 
 const MatchPage = () => {
   const {
@@ -48,8 +48,7 @@ const MatchPage = () => {
           ? prev.balls + 1
           : prev.balls;
 
-
-          const ballsaverage =  prev.balls/6;
+      const ballsaverage = prev.balls / 6;
 
       const updatedOvers = prev.balls == 6 ? prev.overs + 1 : prev.overs;
 
@@ -100,14 +99,13 @@ const MatchPage = () => {
       name: "",
       runs: 0,
       overs: 0,
+      balls: 0,
       Wickets: 0,
       extras: 0,
     },
   });
 
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
 
   const [opened, { open, close }] = useDisclosure(false);
   const [striker, setStriker] = useState("player 0");
@@ -146,7 +144,10 @@ const MatchPage = () => {
           intValue === 6
             ? intValue
             : 1);
-        const updatedoverBowler = parseInt(prev.Bowler.overs) + 1;
+        const updatedballsBowler =
+          prev.Bowler.balls < 6 ? prev.Bowler.balls + 1 : 0;
+        const updatedoversBowler =
+          prev.Bowler.balls > 5 ? prev.Bowler.overs + 1 : prev.Bowler.overs;
 
         const updatedPlayer = {
           ...prev[playerKey],
@@ -158,7 +159,8 @@ const MatchPage = () => {
         const updatedBowler = {
           ...prev.Bowler,
           runs: updatedRunsBowler,
-          overs: updatedoverBowler,
+          balls: updatedballsBowler,
+          overs: updatedoversBowler
         };
 
         if (intValue === 4) {
@@ -313,7 +315,9 @@ const MatchPage = () => {
                     {scorecardteam1.Bowler.name || "Player 1"}
                   </span>
                   <span className="font-medium">
-                    {scorecardteam1.Bowler.overs || "0"}
+                    {scorecardteam1.Bowler.overs +
+                      "/" +
+                      scorecardteam1.Bowler.balls || "0/0"}
                   </span>
                   <span className="font-medium">
                     {scorecardteam1.Bowler.runs || "0"}
